@@ -1,0 +1,96 @@
+---
+title: "Homework 21"
+output: html_notebook
+---
+
+# In this homework, I'll be working through chaoter 4 of "Getting Started With R"
+
+## Setting up R and clearing its brain. 
+
+```{r}
+rm(list = ls())
+library(ggplot2)
+library(here)
+library(dplyr)
+```
+
+## I will need some data, so I'll import a dataset to use for my charts. 
+
+```{r}
+Compensation <- read.csv(here("Data", "compensation.csv"))
+```
+
+##  This is how ggplot2 makes a basic scatterplot of a dataset. 
+
+```{r}
+ggplot(Compensation, aes(x = Root, y = Fruit)) + geom_point()
+```
+
+## In order to increase the size of points, additional information is entered within geom_point(). Here, I'll make the points larger. 
+
+```{r}
+ggplot(Compensation, aes(x = Root, y = Fruit)) + geom_point(size = 5)
+```
+
+## Labels of the X and Y axis can be modified using xlab() and ylab()
+
+```{r}
+ggplot(Compensation, aes(x = Root, y = Fruit)) + geom_point(size = 5) +
+xlab("Root Biomass") +
+ylab("Fruit Biomass")
+
+# Remember to include + between commands, otherwise they won't occur together. 
+```
+
+## Color can also be adjusted using  "colour =", shwing the difference between grazed and ungrazed points. 
+
+
+
+```{r}
+ggplot(Compensation, aes(x = Root, y = Fruit, colour = Grazing)) + geom_point(size = 5) +
+xlab("Root Biomass") +
+ylab("Fruit Biomass")
+
+```
+
+## We can use R to make box-and-whisker plots. Using geom_boxplot() will work. 
+
+```{r}
+ggplot(Compensation, aes(x = Root, y = Fruit, colour = Grazing))  +
+  geom_boxplot() +
+xlab("Grazing Treatment") +
+ylab("Fruit Producion")
+
+#Remember to include +! Treatments are also written differently here. If kept the same, a box-and-whisker plot will appear on top of the scatterplot.Remove geom_point() for this!
+```
+
+## Histograms are another type of chart which R can be used to make. The code for this looks quite different, though. This initial one won't look too nice, but there are ways around that. 
+
+```{r}
+ggplot(Compensation, aes(x = Fruit)) +
+  geom_histogram()
+```
+
+## Here's how we can produce a neater version with different code. 
+
+```{r}
+ggplot(Compensation, aes(x = Fruit)) +
+  geom_histogram(bins = 10)
+ggplot(Compensation, aes (x = Fruit)) +
+  geom_histogram(binwidth = 15)
+```
+
+## Two histograms can be created at the same time! In this example, I'll make one for each grazing treatment.
+
+```{r}
+ggplot(Compensation, aes(x = Fruit)) +
+  geom_histogram(binwidth = 15) +
+facet_wrap(~Grazing)
+```
+
+## Plots can be saved! 
+
+```{r}
+ggsave("NewPlot.png")
+```
+
