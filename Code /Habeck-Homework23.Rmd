@@ -1,0 +1,43 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+rm(list = ls())
+library(here)
+library(dplyr)
+library(ggplot2)
+```
+
+
+```{r}
+Soil_Data <- read.csv(here("Data", "soil_data.csv"))
+```
+
+
+
+## Here is a scatterplot, where x = Field Site, and y = the percent of present SOM
+
+```{r}
+ggplot(Soil_Data, aes(x = Field.Name, y = SOM_percent)) + geom_point()
+```
+
+```{r}
+Soil_Data2 <- mutate(Soil_Data, Forest=Field.Name)
+```
+
+
+```{r}
+unique(Soil_Data2$Field.Name)
+```
+```{r}
+Degrasse_Forest <- which(Soil_Data2$Forest == "DEGRASSE PLOT 1 SAMPLE 1" || Soil_Data2$Forest == "DEGRASSE PLOT 1 SAMPLE 2" || Soil_Data2$Forest == "DEGRASSE PLOT 1 SAMPLE 3" || Soil_Data2$Forest == "DEGRASSE PLOT 2 SAMPLE 1" || Soil_Data2$Forest == "DEGRASSE PLOT 2 SAMPLE 2" || Soil_Data2$Forest == "DEGRASSE PLOT 2 SAMPLE 3" || Soil_Data2$Forest == "DEGRASSE PLOT 3 SAMPLE 1" || Soil_Data2$Forest == "DEGRASSE PLOT 3 SAMPLE 2" || Soil_Data2$Forest == "DEGRASSE PLOT 3 SAMPLE 3")
+
+Soil_Data2$Forest[Degrasse_Forest] <- "Degrasse" 
+```
+
+```{r}
+
+```
+
