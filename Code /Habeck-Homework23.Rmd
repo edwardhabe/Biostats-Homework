@@ -1,7 +1,9 @@
 ---
-title: "R Notebook"
+title: "Homework23"
 output: html_notebook
 ---
+
+## Setting up packages and clearing R's brain to begin. 
 
 ```{r}
 rm(list = ls())
@@ -10,6 +12,7 @@ library(dplyr)
 library(ggplot2)
 ```
 
+## Importing initial dataset. In this homework, I'll need to edit columns and create one for forest names. This will require making a slightly altered data set.
 
 ```{r}
 Soil_Data <- read.csv(here("Data", "soil_data.csv"))
@@ -17,27 +20,68 @@ Soil_Data <- read.csv(here("Data", "soil_data.csv"))
 
 
 
-## Here is a scatterplot, where x = Field Site, and y = the percent of present SOM
+## Here is a scatterplot, where x = Field Site, and y = Percent of present SOM. Since forest sites are not yet separated, data cannot be easily interpreted. 
 
 ```{r}
 ggplot(Soil_Data, aes(x = Field.Name, y = SOM_percent)) + geom_point()
+
+## Field.Name represents the x-axis, but it's near impossible to differentiate which forests are being shown. The y-axis is SOM in percent form. 
 ```
 
+## In order to create a new column, I need to use mutate() on this initial data set. In doing so, I will create 'Soil_Data2' with my new, corrected column. There will be no data in this new column yet, but that will change in the next step. 
+
 ```{r}
-Soil_Data2 <- mutate(Soil_Data, Forest=Field.Name)
+Soil_Data2 <- mutate(Soil_Data, Forest=NA)
+```
+
+## Originally, I had begun using which() to put sample groups and forest names together, editing them into their given forest site. This took absolutely forever, but with Rae's help, I decided to try indexing instead. This way, I could assign data to specific columns while editing what it reads. 
+
+```{r}
+Soil_Data2[1:9, "Forest"] <- "Degrasse"
+
+Soil_Data2[10:18, "Forest"] <- "Donnerville"
+
+Soil_Data2[19:27, "Forest"] <- "Kip Tract"
+
+Soil_Data2[28:36, "Forest"] <- "Peavine"
+
+Soil_Data2[37:45, "Forest"] <- "South Hammond"
+
+## Indexing with brackets allows me to select columns between x:y, separating them for whatever else I wish to do. In this case, I assigned forest names to each grouping, eliminating the need to individually type in and assign names to each cell. 
+```
+
+## Now to make my charts. For this homework, I need to make a scatterplot, a histogram, and a box plot. I'll use multiple ggplot functions to assign x and y values along with appropriate labels. 
+
+```{r}
+ggplot(Soil_Data2, aes(x = Forest, y = SOM_percent)) + geom_point()
+
+ggplot(Soil_Data2, aes(x = Forest, y = SOM_percent))  +
+  geom_boxplot() +
+  xlab("Forest") +
+ylab("SOM_percent")
+
+ggplot(Soil_Data2, aes(x = SOM_percent)) +
+  geom_histogram() +
+facet_wrap(~Forest)
+
+## For box plots, geom_boxplot() is used. X and y axis labels must be provided below, their names in quotation marks. Remember to put + between functions to link them! 
+
+## The histogram was a bit more challenging to figure out. I needed to assign SOM_percent to the x-axis rather than the y-axis, as its count was being measured by individual location. Using facet_wrap(), I could take all independent values from 'Forest' and create individual histograms of SOM_percent for each. 
 ```
 
 
-```{r}
-unique(Soil_Data2$Field.Name)
-```
-```{r}
-Degrasse_Forest <- which(Soil_Data2$Forest == "DEGRASSE PLOT 1 SAMPLE 1" || Soil_Data2$Forest == "DEGRASSE PLOT 1 SAMPLE 2" || Soil_Data2$Forest == "DEGRASSE PLOT 1 SAMPLE 3" || Soil_Data2$Forest == "DEGRASSE PLOT 2 SAMPLE 1" || Soil_Data2$Forest == "DEGRASSE PLOT 2 SAMPLE 2" || Soil_Data2$Forest == "DEGRASSE PLOT 2 SAMPLE 3" || Soil_Data2$Forest == "DEGRASSE PLOT 3 SAMPLE 1" || Soil_Data2$Forest == "DEGRASSE PLOT 3 SAMPLE 2" || Soil_Data2$Forest == "DEGRASSE PLOT 3 SAMPLE 3")
-
-Soil_Data2$Forest[Degrasse_Forest] <- "Degrasse" 
-```
+## Here, I'll do the exact same thing, replacing SOM_percent with Ca.ppm 
 
 ```{r}
+ggplot(Soil_Data2, aes(x = Forest, y = Ca.ppm)) + geom_point()
 
+ggplot(Soil_Data2, aes(x = Forest, y = Ca.ppm))  +
+  geom_boxplot() +
+  xlab("Forest") +
+ylab("Ca.ppm")
+
+ggplot(Soil_Data2, aes(x = Ca.ppm)) +
+  geom_histogram() +
+facet_wrap(~Forest)
 ```
 
