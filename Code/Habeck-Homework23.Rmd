@@ -3,7 +3,7 @@ title: "Homework23"
 output: html_notebook
 ---
 
-## Setting up packages and clearing R's brain to begin. 
+## Setting up packages and clearing R's brain to begin.
 
 ```{r}
 rm(list = ls())
