@@ -1,0 +1,11 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+rm(list = ls())
+library(ggplot2)
+library(here)
+library(dplyr)
+```
+
